@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Green Animal Hospital - Premium Veterinary Care</title>
+    <link rel="icon" href="public/images/logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -153,6 +154,10 @@
                 font-size: 2.5rem;
             }
         }
+
+        .max-w-8xl {
+            max-width: 1800px;
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -167,13 +172,11 @@
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mr-3">
-                            <i class="fas fa-paw text-white"></i>
-                        </div>
+                        <img src="public/images/logo.png" alt="Dr. Green Logo" class="w-10 h-10 rounded-full object-cover mr-3">
                         <span class="text-xl font-bold text-gray-900">Dr. Green</span>
                         <span class="text-sm text-gray-600 ml-1">Animal Hospital</span>
                     </div>
@@ -215,10 +218,8 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="three-container">
-            <div id="threeCanvas" class="absolute inset-0"></div>
-        </div>
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background-image: url('public/images/hero.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div class="absolute inset-0 bg-black/40"></div>
 
         <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 class="serif-font text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
@@ -265,7 +266,7 @@
 
     <!-- About Section -->
     <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="relative">
                     <div class="bg-green-100 rounded-3xl p-8 relative overflow-hidden">
@@ -307,7 +308,7 @@
 
     <!-- Services Section -->
     <section id="services" class="py-20 hero-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <div class="text-white/80 text-sm font-semibold mb-2">OUR SERVICES</div>
                 <h2 class="serif-font text-4xl md:text-5xl font-bold text-white mb-4">
@@ -396,7 +397,7 @@
 
     <!-- Why Choose Us Section -->
     <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
                     <div class="text-green-600 text-sm font-semibold mb-2">WHY CHOOSE US</div>
@@ -449,7 +450,7 @@
                 </div>
                 <div class="relative">
                     <div class="bg-green-600 rounded-3xl p-8 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Veterinary team" class="rounded-2xl w-full h-96 object-cover">
+                        <img src="public/images/whychooseus.png" alt="Veterinary team" class="rounded-2xl w-full h-96 object-cover">
                         <div class="absolute -top-5 -right-5 w-24 h-24 bg-white rounded-full flex items-center justify-center">
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-green-600">98%</div>
@@ -464,7 +465,7 @@
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-20 hero-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <div class="text-white/80 text-sm font-semibold mb-2">TESTIMONIALS</div>
                 <h2 class="serif-font text-4xl md:text-5xl font-bold text-white mb-4">
@@ -605,7 +606,7 @@
 
     <!-- Gallery Section -->
     <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <div class="text-green-600 text-sm font-semibold mb-2">OUR GALLERY</div>
                 <h2 class="serif-font text-4xl md:text-5xl font-bold mb-4">
@@ -622,7 +623,7 @@
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
                 </div>
                 <div class="relative group overflow-hidden rounded-2xl">
-                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Veterinary team" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="public/images/gallary.png" alt="Veterinary team" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
                 </div>
                 <div class="relative group overflow-hidden rounded-2xl">
@@ -646,7 +647,7 @@
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
                 </div>
                 <div class="relative group overflow-hidden rounded-2xl">
-                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pet dental care" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="public/images/gallary1.png" alt="Pet dental care" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
                 </div>
             </div>
@@ -655,17 +656,24 @@
 
     <!-- Contact Section -->
     <section id="contact" class="py-20 hero-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="relative">
-                    <div class="bg-white/10 backdrop-blur-md rounded-3xl p-8 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hospital location" class="rounded-2xl w-full h-96 object-cover">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <button class="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-colors flex items-center">
-                                <i class="fas fa-map-marker-alt mr-2"></i>
-                                View on Map
-                            </button>
-                        </div>
+                    <div class="rounded-3xl overflow-hidden relative" style="height: 420px;">
+                        <iframe
+                            src="https://www.google.com/maps?q=Dr+Green+Animal+Hospital+Smouha+Alexandria+Egypt&output=embed"
+                            width="100%"
+                            height="100%"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <a href="https://maps.app.goo.gl/fZFZDKXFmaKgbZhu5" target="_blank" rel="noopener noreferrer"
+                           class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md text-green-800 px-6 py-3 rounded-full font-semibold hover:bg-white transition-colors flex items-center shadow-lg whitespace-nowrap">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Open in Google Maps
+                        </a>
                     </div>
                 </div>
                 <div>
@@ -710,12 +718,12 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                        <button class="bg-white text-green-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                        <a href="https://maps.app.goo.gl/fZFZDKXFmaKgbZhu5" target="_blank" rel="noopener noreferrer" class="bg-white text-green-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors text-center">
                             Get Directions
-                        </button>
-                        <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-800 transition-colors">
+                        </a>
+                        <a href="https://wa.me/201011990510" target="_blank" rel="noopener noreferrer" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-800 transition-colors text-center">
                             Contact Us
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -724,13 +732,11 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <div>
                     <div class="flex items-center mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mr-3">
-                            <i class="fas fa-paw text-white"></i>
-                        </div>
+                        <img src="public/images/logo.png" alt="Dr. Green Logo" class="w-10 h-10 rounded-full object-cover mr-3">
                         <span class="text-xl font-bold">Dr. Green</span>
                         <span class="text-sm text-gray-400 ml-1">Animal Hospital</span>
                     </div>
@@ -738,13 +744,13 @@
                         Providing premium veterinary care with compassion and expertise since 2017.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                        <a href="https://www.facebook.com/profile.php?id=100064141713583" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                        <a href="https://www.instagram.com/dr_green_animal_hospital/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                        <a href="https://wa.me/201011990510" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>
@@ -781,7 +787,11 @@
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-phone text-green-400 mr-3"></i>
-                            <p class="text-gray-400">+20 10 1199 0510</p>
+                            <a href="tel:+201011990510" class="text-gray-400 hover:text-white transition-colors">+20 10 1199 0510</a>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fab fa-whatsapp text-green-400 mr-3"></i>
+                            <a href="https://wa.me/201011990510" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">WhatsApp Us</a>
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-envelope text-green-400 mr-3"></i>
@@ -795,9 +805,12 @@
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">© 2023 Dr. Green Animal Hospital. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-400 text-sm">© 2024 Dr. Green Animal Hospital. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">
+                    Architected & Engineered by <a href="https://www.fayedintelligence.com" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 transition-colors font-medium">Fayed Intelligence</a>
+                </p>
+                <div class="flex space-x-6">
                     <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
                     <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
                 </div>
@@ -867,6 +880,7 @@
         let scene, camera, renderer, petModel, controls;
 
         function initThreeJS() {
+            if (!document.getElementById('threeCanvas')) return;
             // Create scene
             scene = new THREE.Scene();
             scene.background = null;
