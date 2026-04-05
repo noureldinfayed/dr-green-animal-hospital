@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Green Animal Hospital - Premium Veterinary Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://unpkg.com/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary-green: #2D5A3D;
+            --secondary-green: #4A7C59;
+            --accent-green: #7CB342;
+            --light-green: #C8E6C9;
+            --cream: #FFF8E1;
+            --dark-brown: #3E2723;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark-brown);
+        }
+
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+        }
+
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--accent-green), #8BC34A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .three-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .paw-print {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff 0.5px, transparent 0.5px),
+                        radial-gradient(circle at 70% 30%, #fff 0.5px, transparent 0.5px),
+                        radial-gradient(circle at 30% 70%, #fff 0.5px, transparent 0.5px),
+                        radial-gradient(circle at 70% 70%, #fff 0.5px, transparent 0.5px),
+                        radial-gradient(circle at 50% 50%, #fff 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .paw-print::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: -10px;
+            left: 20px;
+        }
+
+        .paw-print::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: -10px;
+            right: 20px;
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-counter {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary-green);
+        }
+
+        @media (max-width: 768px) {
+            .stats-counter {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="text-center">
+            <div class="paw-print mx-auto mb-4"></div>
+            <h1 class="text-white text-2xl font-bold mb-2">Dr. Green Animal Hospital</h1>
+            <p class="text-white/80">Loading premium experience...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-paw text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Dr. Green</span>
+                        <span class="text-sm text-gray-600 ml-1">Animal Hospital</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                        <a href="#services" class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Services</a>
+                        <a href="#about" class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">About</a>
+                        <a href="#testimonials" class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Testimonials</a>
+                        <a href="#contact" class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-colors">
+                        Book Appointment
+                    </button>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-gray-700 hover:text-green-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600">Home</a>
+                <a href="#services" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600">Services</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600">About</a>
+                <a href="#testimonials" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600">Testimonials</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600">Contact</a>
+                <button class="w-full text-left bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-base font-medium mt-2">
+                    Book Appointment
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="three-container">
+            <div id="threeCanvas" class="absolute inset-0"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="serif-font text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Compassionate Care<br>
+                for Your <span class="gradient-text">Beloved Pets</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+                Premium veterinary hospital providing 24/7 expert care for all animals in Alexandria
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-green-800 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center">
+                    Book Appointment <i class="fas fa-calendar ml-2"></i>
+                </button>
+                <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-green-800 transition-colors flex items-center justify-center">
+                    Our Services <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 scroll-indicator">
+            <div class="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center">
+                <i class="fas fa-chevron-down text-white"></i>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 floating-animation hidden lg:block">
+            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-heart text-white text-2xl"></i>
+            </div>
+        </div>
+        <div class="absolute top-40 right-10 floating-animation" style="animation-delay: -2s;">
+            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-stethoscope text-white text-xl"></i>
+            </div>
+        </div>
+        <div class="absolute bottom-40 left-20 floating-animation" style="animation-delay: -4s;">
+            <div class="w-18 h-18 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-pills text-white text-xl"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="bg-green-100 rounded-3xl p-8 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559190394-df5a28aab5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Veterinarian with pet" class="rounded-2xl w-full h-96 object-cover">
+                        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-green-600 rounded-full flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-3xl font-bold">24/7</div>
+                                <div class="text-sm">Emergency Care</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-green-600 text-sm font-semibold mb-2">ABOUT US</div>
+                    <h2 class="serif-font text-4xl md:text-5xl font-bold mb-6">
+                        Premium Veterinary Care<br>
+                        Since <span class="text-green-600">2017</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                        Dr. Green Animal Hospital has been providing exceptional veterinary care to the Alexandria community since 2017. Our state-of-the-art facility is equipped with the latest medical technology and staffed by compassionate professionals dedicated to the health and well-being of your pets.
+                    </p>
+                    <div class="grid grid-cols-2 gap-8 mb-8">
+                        <div class="text-center">
+                            <div class="stats-counter">4,894</div>
+                            <div class="text-gray-600 font-medium">Happy Clients</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="stats-counter">24/7</div>
+                            <div class="text-gray-600 font-medium">Emergency Care</div>
+                        </div>
+                    </div>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors">
+                        Learn More About Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 hero-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="text-white/80 text-sm font-semibold mb-2">OUR SERVICES</div>
+                <h2 class="serif-font text-4xl md:text-5xl font-bold text-white mb-4">
+                    Comprehensive Pet Care Services
+                </h2>
+                <p class="text-white/90 text-lg max-w-2xl mx-auto">
+                    From routine checkups to advanced surgical procedures, we provide complete healthcare for all types of pets
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-syringe text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Vaccinations</h3>
+                    <p class="text-gray-600 mb-6">Comprehensive vaccination programs to protect your pets from common diseases and ensure their long-term health.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-heartbeat text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Emergency Care</h3>
+                    <p class="text-gray-600 mb-6">24/7 emergency services with experienced veterinarians ready to handle any critical situation.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-cut text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Surgical Care</h3>
+                    <p class="text-gray-600 mb-6">Advanced surgical procedures performed in our state-of-the-art operating rooms with utmost care.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-x-ray text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Diagnostic Imaging</h3>
+                    <p class="text-gray-600 mb-6">Digital X-rays, ultrasound, and other advanced diagnostic tools for accurate and quick results.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-tooth text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Dental Care</h3>
+                    <p class="text-gray-600 mb-6">Professional dental cleaning and treatment to maintain your pet's oral health and prevent dental diseases.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="service-card bg-white rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-bone text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Nutrition Counseling</h3>
+                    <p class="text-gray-600 mb-6">Personalized nutrition plans to ensure your pets receive the best diet for their specific needs.</p>
+                    <button class="text-green-600 font-semibold hover:text-green-700 transition-colors">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="text-green-600 text-sm font-semibold mb-2">WHY CHOOSE US</div>
+                    <h2 class="serif-font text-4xl md:text-5xl font-bold mb-6">
+                        Exceptional Care for<br>
+                        Your <span class="text-green-600">Furry Family</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                        At Dr. Green Animal Hospital, we combine advanced medical expertise with genuine compassion to provide the best possible care for your pets. Our team is dedicated to creating a stress-free environment where both pets and their owners feel comfortable and cared for.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-user-md text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Experienced Team</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-microscope text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Advanced Technology</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-heart text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Compassionate Care</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">24/7 Availability</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors">
+                        Meet Our Team
+                    </button>
+                </div>
+                <div class="relative">
+                    <div class="bg-green-600 rounded-3xl p-8 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Veterinary team" class="rounded-2xl w-full h-96 object-cover">
+                        <div class="absolute -top-5 -right-5 w-24 h-24 bg-white rounded-full flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">98%</div>
+                                <div class="text-xs text-gray-600">Client Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 hero-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="text-white/80 text-sm font-semibold mb-2">TESTIMONIALS</div>
+                <h2 class="serif-font text-4xl md:text-5xl font-bold text-white mb-4">
+                    What Our Clients Say
+                </h2>
+                <p class="text-white/90 text-lg max-w-2xl mx-auto">
+                    Read what our satisfied clients have to say about their experience at Dr. Green Animal Hospital
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Mir Vat" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Mir Vat</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "I had a wonderful experience at Dr Green Animal Hospital. The team is very professional and caring. They took amazing care of my pet and made sure we were both comfortable throughout the process."
+                    </p>
+                    <div class="text-sm text-gray-500">6 months ago</div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Meray Wadiea" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Meray Wadiea</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "The staff at this clinic are very caring and professional. They treat every pet with love and attention, and the place is always clean and welcoming. I highly recommend Dr. Green to all pet owners."
+                    </p>
+                    <div class="text-sm text-gray-500">4 months ago</div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Mohamed Sedky" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Mohamed Sedky</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "Everyone at the hospital provide a solid image of professionalism and care. I see that they are doing their best to keep the place clean and have a genuine concern for animal welfare. Excellent service!"
+                    </p>
+                    <div class="text-sm text-gray-500">9 months ago</div>
+                </div>
+
+                <!-- Additional testimonials -->
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Ahmed Khaled" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Ahmed Khaled</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "My cat had a complex surgery here and the entire team was amazing. The post-operative care and follow-ups were exceptional. I'm so grateful for their expertise and kindness."
+                    </p>
+                    <div class="text-sm text-gray-500">3 months ago</div>
+                </div>
+
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Sarah Mahmoud" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Sarah Mahmoud</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "I bring all my pets here - dogs, cats, and even my birds. The team is knowledgeable about all types of animals and provides excellent care. The 24/7 availability is a lifesaver!"
+                    </p>
+                    <div class="text-sm text-gray-500">2 months ago</div>
+                </div>
+
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Youssef Hassan" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Youssef Hassan</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "The nutrition counseling service changed my dog's life. He was overweight and had digestive issues, but with their personalized diet plan, he's now healthy and energetic. Thank you Dr. Green team!"
+                    </p>
+                    <div class="text-sm text-gray-500">1 month ago</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="text-green-600 text-sm font-semibold mb-2">OUR GALLERY</div>
+                <h2 class="serif-font text-4xl md:text-5xl font-bold mb-4">
+                    A Day at Dr. Green
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    See our facility and team in action as we provide the best care for your beloved pets
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1559190394-df5a28aab5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Veterinarian with dog" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Veterinary team" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cat examination" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pet surgery" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Bird examination" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pet recovery" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Veterinary consultation" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+                <div class="relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pet dental care" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 hero-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="bg-white/10 backdrop-blur-md rounded-3xl p-8 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hospital location" class="rounded-2xl w-full h-96 object-cover">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <button class="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-colors flex items-center">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                View on Map
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-white/80 text-sm font-semibold mb-2">CONTACT US</div>
+                    <h2 class="serif-font text-4xl md:text-5xl font-bold text-white mb-6">
+                        Visit Our Hospital
+                    </h2>
+                    <p class="text-white/90 text-lg mb-8 leading-relaxed">
+                        We're here to provide the best care for your pets. Visit our modern facility in Alexandria or contact us for appointments and inquiries.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Address</h4>
+                                <p class="text-white/90">Smouha, Victor Emanouil Square behind La Poire, Alexandria, Egypt, 21500</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Phone</h4>
+                                <p class="text-white/90">+20 10 1199 0510</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-clock text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Hours</h4>
+                                <p class="text-white/90">Open 24 hours, 7 days a week</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                        <button class="bg-white text-green-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                            Get Directions
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-800 transition-colors">
+                            Contact Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-paw text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">Dr. Green</span>
+                        <span class="text-sm text-gray-400 ml-1">Animal Hospital</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">
+                        Providing premium veterinary care with compassion and expertise since 2017.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-colors">Testimonials</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Emergency Care</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Vaccinations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Surgical Care</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Dental Care</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Diagnostic Imaging</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Contact Info</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-green-400 mt-1 mr-3"></i>
+                            <p class="text-gray-400">Smouha, Victor Emanouil Square behind La Poire, Alexandria, Egypt, 21500</p>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-green-400 mr-3"></i>
+                            <p class="text-gray-400">+20 10 1199 0510</p>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-green-400 mr-3"></i>
+                            <p class="text-gray-400">info@drgreenhospital.com</p>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-green-400 mr-3"></i>
+                            <p class="text-gray-400">Open 24/7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2023 Dr. Green Animal Hospital. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 opacity-0 pointer-events-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => loadingScreen.style.display = 'none', 500);
+            }, 2000);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Three.js 3D Scene for Hero Section
+        let scene, camera, renderer, petModel, controls;
+
+        function initThreeJS() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = null;
+
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5);
+
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('threeCanvas').appendChild(renderer.domElement);
+
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+
+            // Load 3D model (using a placeholder)
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                'https://threejs.org/examples/models/gltf/Duck/glTF/Duck.gltf',
+                function(gltf) {
+                    petModel = gltf.scene;
+                    petModel.scale.set(0.5, 0.5, 0.5);
+                    petModel.position.set(0, -1, 0);
+                    scene.add(petModel);
+
+                    // Animate the model
+                    gsap.to(petModel.rotation, {
+                        y: Math.PI * 2,
+                        duration: 20,
+                        repeat: -1,
+                        ease: "none"
+                    });
+                },
+                undefined,
+                function(error) {
+                    console.error('Error loading 3D model:', error);
+                    // Fallback - create a simple sphere
+                    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0x7CB342,
+                        shininess: 30
+                    });
+                    petModel = new THREE.Mesh(geometry, material);
+                    petModel.position.set(0, -1, 0);
+                    scene.add(petModel);
+
+                    // Animate the sphere
+                    gsap.to(petModel.rotation, {
+                        y: Math.PI * 2,
+                        duration: 20,
+                        repeat: -1,
+                        ease: "none"
+                    });
+                }
+            );
+
+            // Add floating particles
+            const particleCount = 100;
+            const particles = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 10;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+            }
+
+            particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.05,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            const particleSystem = new THREE.Points(particles, particleMaterial);
+            scene.add(particleSystem);
+
+            // Animation for particles
+            gsap.to(particleSystem.rotation, {
+                y: Math.PI * 2,
+                duration: 100,
+                repeat: -1,
+                ease: "none"
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+
+            // Start animation loop
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (petModel) {
+                petModel.rotation.y += 0.005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize Three.js when the page loads
+        window.addEventListener('load', initThreeJS);
+
+        // Stats counter animation
+        function animateCounter(element, target) {
+            const duration = 2000;
+            const start = 0;
+            const range = target - start;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const value = Math.floor(progress * range + start);
+
+                element.textContent = value;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        }
+
+        // Animate counters when they come into view
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target.querySelector('.stats-counter');
+                    if (counter) {
+                        const target = parseInt(counter.textContent.replace(/,/g, ''));
+                        animateCounter(counter, target);
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stats-counter').forEach(counter => {
+            observer.observe(counter.closest('div'));
+        });
+
+        // Service card hover effects
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                gsap.to(this, {
+                    y: -10,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', function() {
+                gsap.to(this, {
+                    y: 0,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
